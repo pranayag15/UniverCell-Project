@@ -1,0 +1,48 @@
+<% include partials/header %>
+
+<div class="container">
+        <div class="container well">
+            <div class="text-center">
+                <% if(typeof currentUser == 'object' && currentUser.username=="admin"){ %>
+                    <a class="btn btn-primary btn-lg" href="/products/new">Add new Product</a>
+                <% } %>
+            </div>
+        </div>
+    <hr class="thick-line">
+    <div class="row" >
+        <% products.forEach(function(product){ %>
+        <div class="col-md-4">
+              <div class="thumbnail" id="thumb">
+                <img src="<%= product.image %>" alt="" class="img-responsive img-thumbnail"  id="imgthumb">
+                <div class="caption">
+                  <h4 class="pull-right">₹<%= product.price %></h4>
+                  <h4><a href="/products/<%=product._id%>"><%= product.name %></a></h4>
+                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry..</p>
+                </div>
+                <div class="ratings">
+                  <p>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    (<span class="glyphicon glyphicon-thumbs-up">15</span>)
+                  </p>
+                </div>
+                <div class="space-ten"></div>
+                <div class="btn-ground text-center">
+                    <a href="/products/<%=product._id%>/details" class="btn btn-primary">Buy Now</a>
+                    <a href="/products/<%=product._id%>" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+         <% }); %>
+    </div>
+    
+    
+</div>
+
+  
+ <% include partials/footer %>
+
+

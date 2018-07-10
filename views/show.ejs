@@ -1,0 +1,77 @@
+<% include partials/header %>
+<!--<h1>hahahaah</h1>-->
+<!--<h4></h4>-->
+
+<div class="container">
+<hr>
+
+	
+<div class="card">
+	<div class="row">
+		<div class="col-sm-6">
+<article class="gallery-wrap"> 
+<div class="img-big-wrap">
+  <div > <a href="#"><img src="<%= product.image %>" class="thumbnail"></a></div>
+</div> <!-- slider-product.// -->
+</article> <!-- gallery-wrap .end// -->
+		</div>
+		<aside class="col-sm-6">
+<article class="card-body p-5">
+	<h3 class="title mb-3"><%= product.name%></h3>
+
+<p class="price-detail-wrap"> 
+	<span class="price h3 text-warning"> 
+		<span class="currency">INR ₹</span><span class="num"><%= product.price%></span>
+	</span> 
+</p> <!-- price-detail-wrap .// -->
+<dl class="item-property">
+  <dt>Description</dt>
+  <dd><p><%= product.description%></p></dd>
+</dl>
+<dl class="param param-feature">
+  <dt>Model#</dt>
+  <dd>12345611</dd>
+</dl>  <!-- item-property-hor .// -->
+<dl class="param param-feature">
+  <dt>Color</dt>
+  <dd>Black and white</dd>
+</dl>  <!-- item-property-hor .// -->
+
+<hr>
+	<div class="row">
+		<div class="col-sm-5">
+			<dl class="param param-inline">
+			  <dt>Quantity: </dt>
+			  <dd>
+			  	<select class="form-control form-control-sm" style="width:70px;">
+			  		<option> 1 </option>
+			  		<option> 2 </option>
+			  		<option> 3 </option>
+			  	</select>
+			  </dd>
+			</dl>  <!-- item-property .// -->
+		</div> <!-- col.// -->
+	</div> <!-- row.// -->
+	<hr>
+	<a href="/products/<%=product._id%>/details" class="btn btn-lg btn-primary text-uppercase"> Buy now </a>
+	<a href="/products/<%=product._id%>/cart" class="btn btn-lg btn-success text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+	 <% if(typeof currentUser == 'object' && currentUser.username=="admin"){ %>
+		<form action="/products/<%= product._id%>?_method=DELETE" method="POST">
+			<button class="btn btn-danger">Delete</button>
+		</form>
+	<% }%>
+</article> <!-- card-body.// -->
+		</aside> <!-- col.// -->
+	</div> <!-- row.// -->
+</div> <!-- card.// -->
+
+
+</div>
+<!--container.//-->
+
+
+<br><br><br>
+
+
+
+<% include partials/footer %>

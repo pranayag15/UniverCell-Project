@@ -1,0 +1,46 @@
+<% include partials/header %>
+
+<div class="container">
+    <h1 class="text-center"><i><u>Enter Details</u></i></h1>
+        <div style="width: 35%; margin: 50px auto;">
+            <form action="/products/<%= product._id%>/details" method="POST" class="form-horizontal">
+                <h3 style="color: purple">Billing Details</h3>
+                <div class="form-group">
+                  
+                    <input class="form-control" type="text" name="details[firstname]" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="details[lastname]" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" name="details[contact]" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="details[email]" placeholder="Email Address">
+                </div>
+                <h3 style="color: purple">Shipping Details</h3>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="details[house]" placeholder="House Number">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="details[locality]" placeholder="Locality">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="details[city]" placeholder="Enter City">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="detail[state]" placeholder="Enter State">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" name="details[zipcode]" placeholder="Enter Zipcode">
+                </div>
+            
+                <div class="form-group">
+                    <button class="btn btn-success btn-block">Submit</button>
+                </div>
+            </form>
+            <a href="/products">Go Back</a>
+        </div>
+</div>
+
+<% include partials/footer %>

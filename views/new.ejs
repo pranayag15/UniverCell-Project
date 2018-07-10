@@ -1,0 +1,29 @@
+<% include partials/header%>
+<div class="container">
+    <h1 class="text-center">New Product</h1>
+        <div style="width: 30%; margin: 50px auto;">
+            <form action="/products" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="product[name]" placeholder="Product Name">
+                </div>
+                <div class="form-group">    
+                    <input class="form-control" type="text" name="product[image]" placeholder="Image URL">
+                </div>
+                <div class="form-group">    
+                    <input class="form-control" type="text" name="product[category]" placeholder="Category">
+                </div>
+                <div class="form-group">    
+                    <input class="form-control" type="text" name="product[description]" placeholder="Add description">
+                </div>
+                <div class="form-group">    
+                    <input class="form-control" type="number" name="product[price]" placeholder="Price">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success btn-block">Add Product</button>
+                </div>
+            </form>
+            <a href="/products">Go Back</a>
+        </div>
+</div>
+
+<% include partials/footer%>

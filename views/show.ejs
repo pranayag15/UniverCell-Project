@@ -21,7 +21,7 @@
 
 <p class="price-detail-wrap"> 
 	<span class="price h3 text-warning"> 
-		<span class="currency">INR ₹</span><span class="num"><%= product.price%></span>
+		<span class="currency">INR ₹</span><span id="price" class="num"><%= product.price%></span>
 	</span> 
 </p> <!-- price-detail-wrap .// -->
 <dl class="item-property">
@@ -43,7 +43,7 @@
 			<dl class="param param-inline">
 			  <dt>Quantity: </dt>
 			  <dd>
-			  	<select class="form-control form-control-sm" style="width:70px;">
+			  	<select id="quantity" class="form-control form-control-sm" style="width:70px;">
 			  		<option> 1 </option>
 			  		<option> 2 </option>
 			  		<option> 3 </option>
@@ -72,6 +72,23 @@
 
 <br><br><br>
 
+<script>
+	var initprice = Number(document.getElementById("price").innerText);
+	var select = document.getElementById("quantity");
+	var quantity = 1;
+	var price = initprice;
+	select.onchange = function(){
+		var selIndex = select.selectedIndex;
+		var selValue = select.options[selIndex].innerHTML;
+		quantity = Number(selValue);
+		var price = initprice*quantity;
 
+		console.log(price, "andadr");
+		
+	}
+	var price = initprice*quantity;
+	console.log(price);
+	
+</script>
 
 <% include partials/footer %>

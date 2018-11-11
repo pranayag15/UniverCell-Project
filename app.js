@@ -1,22 +1,32 @@
 var express     = require("express"),
     app         = express(),
+    flash       = require('connect-flash'),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     passport    = require("passport"),
     methodOverride = require("method-override"),
+    expressValidator = require("express-validator"),
     LocalStrategy  = require("passport-local"),
     Products    = require("./models/products"),
     User        = require("./models/user"),
-    moment      = require('moment');
+    moment      = require('moment'),
+    session     = require('express-session');
     
-mongoose.connect("mongodb://localhost/products");
+app.use(expressValidator());
+var authRoute = require('./routes/auth');
+var indexRoutes = require('./routes/index');
+
+// mongoose.connect("mongodb://localhost/products", { useNewUrlParser: true });
+mongoose.connect("mongodb://believepranay:database1@ds233061.mlab.com:33061/univercell", { useNewUrlParser: true });
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
+app.use(flash());
 
 //Passport
-app.use(require("express-session")({
+app.use(session({
     secret: "missing college badly!",
     resave: false,
     saveUninitialized: false
@@ -30,162 +40,29 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;  // this statement assigns loggedin user(req.user) to currentUsers which is accessible in each tempelate
+    res.locals.loginError = req.flash('error')
+    res.locals.loginSuccess = req.flash('success');
     next();
 });
 
-//ROUTES
 app.get("/", function(req, res){
-   res.render("landing"); 
-});
+    res.render("landing"); 
+ });
 
-//INDEX - show all products
-app.get("/products", function(req, res){
-    Products.find({}, function(err, allProducts){
-        if(err){
-            console.log(err);
-        } else {
-            // console.log(req.user);
-            res.render("products",{products: allProducts, currentUser: req.user});
-        }
-    });
-});
+ app.get("/load", (req, res) => {
+    res.render("landing2")
+ });
 
-//NEW Product
-app.get("/products/new", function(req, res) {
-    res.render("new");
-});
+app.use('/', authRoute);
+app.use('/products', indexRoutes);
 
-//Show
-app.get("/products/:id", function(req, res){
-    Products.findById(req.params.id, function(err, foundproduct){
-      if(err){
-          console.log(err);
-      } else {
-        //   console.log(foundproduct);
-          res.render("show", {product: foundproduct});
-        // res.send("gotcha0");
-      }
-    }); 
-});
+function isLoggedin(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+  }
 
-//Category
-app.get("/products/:category/view", function(req, res){
-    Products.find({"category": req.params.category}, function(err, allProducts){
-        if(err){
-            console.log(err);
-        } else {
-            // console.log(allProducts);
-            res.render("products",{products: allProducts});
-        }
-    });
-});
-
-
-//NEW POST
-app.post("/products", function(req, res){
-    Products.create(req.body.product, function(err, product){
-       if(err){
-           console.log(err);
-       } else {
-           res.redirect("/products");
-       }
-    });
-});
-
-//DELETE
-app.delete("/products/:id", function(req, res){
-  Products.findByIdAndRemove(req.params.id, function(err, foundproduct){
-      if(err){
-          console.log(err);
-      } else {
-          console.log("almost done");
-          res.redirect("/products");
-      }
-  }); 
-});
-
-//Cart
-app.get("/products/:id/cart", function(req, res) {
-    Products.findById(req.params.id, function(err, buying){
-       if(err){
-           console.log(err);
-       } else {
-           var total=+buying.price;
-           console.log(total);
-           res.render("cart", {product: buying});
-       }
-    });
-});
-
-//Details
-app.get("/products/:id/details", function(req, res) {
-    Products.findById(req.params.id, function(err, buying){
-       if(err){
-           console.log(err);
-       } else {
-           res.render("details", {product: buying});
-       }
-    });
-});
-
-app.post("/products/:id/details", function(req, res) {
-    Products.findById(req.params.id, function(err, buying){
-        if(err){
-            console.log(err);
-        } else {
-            var alldetails = req.body.details;
-            var moment = require('moment');
-            console.log(moment().format('Do YYYY-MM-DDTHH:mm:ss'));
-            res.render("billsummary", {details: alldetails, product: buying, moment: moment});
-        }
-    });
-});
-
-//*************************
-//AUTH Routes
-//*************************
-
-app.get("/register", function(req, res){
-   res.render("register"); 
-});
-
-app.post("/register", function(req, res){
-   var newUser = new User({username: req.body.username});
-   User.register(newUser, req.body.password, function(err, user){
-      if(err){
-          console.log(err);
-          return res.render("register");
-      } 
-      passport.authenticate("local")(req, res, function(){
-         res.redirect("/products"); 
-      });
-    //   console.log(user);
-   });
-});
-
-app.get("/contactus", function(req, res) {
-   res.render("contactus"); 
-});
-
-//LOGIN Routes
-app.get("/login", function(req, res){
-   res.render("login"); 
-});
-
-app.post("/login", passport.authenticate("local", 
-    {
-        successRedirect: "/products",
-        failureRedirect: "/login"
-    }) ,function(req, res){
-    
-});
-
-//Logout
-app.get("/logout", function(req, res) {
-   req.logout();
-   res.redirect("/products");
-});
-
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(8080 , function(){
    console.log("Revision Project is on the way");
 });

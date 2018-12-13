@@ -32,7 +32,7 @@ router.get("/register", function(req, res){
                 password: req.body.password,
                 errorMessage: errors
             });
-            console.log(errors);
+            // console.log(errors);
         } else {
             var newUser = new User({username: req.body.username, password: req.body.password});
             User.register(newUser, req.body.password, function(err, user){
@@ -48,36 +48,24 @@ router.get("/register", function(req, res){
         }
     });
  });
-
-//  router.post("/register", [
-//         check('username').isEmail(),
-//         check('password').isLength({ min: 3 })
-//     ], (req, res) => {
-//         const errors = validationResult(req);
-//         if(!errors.isEmpty()){
-//             console.log(errors);
-//         }
-//         var newUser = new User({username: req.body.username, password: req.body.password});
-//         User.register(newUser, req.body.password, function(err, user){
-//         if(err){
-//             console.log(err);
-//             return res.render("register");
-//         } 
-//         passport.authenticate("local")(req, res, function(){
-//             res.redirect("/products"); 
-//         });
-//         //   console.log(user);
-//         });
-//  });
  
  router.get("/contactus", function(req, res) {
+     req.flash('message', "pranay is dope");
     res.render("contactus"); 
+ });
+
+ router.get("/msg", (req, res)=>{
+    //  console.log(req.flash('message'));
+    var msg = req.flash('message');
+    console.log(msg);
+     res.json(msg);
  });
  
  //LOGIN Routes
  router.get("/login", function(req, res){
-    // console.log(typeof(req.flash('error')));
-    // console.log(req.flash('success'));
+    // console.log(req.flash('error'));
+    console.log("*********************");
+    console.log(req.flash('error'));
     res.render("login"); 
  });
  
@@ -88,7 +76,7 @@ router.get("/register", function(req, res){
          failureFlash: "nhi ho paya login",
          successFlash: "kya ukhaad liya login krke"
      }) ,function(req, res){
-        // console.log(req.flash('error'));
+        console.log(req.flash('error'));
  });
 
  //Logout

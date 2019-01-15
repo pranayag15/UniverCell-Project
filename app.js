@@ -18,7 +18,7 @@ var indexRoutes = require('./routes/index');
 
 // mongoose.connect("mongodb://localhost/products", { useNewUrlParser: true });
 mongoose.connect("mongodb://believepranay:database1@ds233061.mlab.com:33061/univercell", { useNewUrlParser: true });
-
+// mongoexport -h ds233061.mlab.com:33061 -d univercell -c <collection> -u <user> -p <password> -o <output file>
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
